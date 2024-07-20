@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:trips_app_flutter/views/city/activity_model.dart';
+import 'package:trips_app_flutter/models/activity_model.dart';
 import 'package:trips_app_flutter/data/data.dart' as data;
+import 'package:trips_app_flutter/views/city/widgets/activity_list.dart';
+import 'package:trips_app_flutter/views/city/widgets/trip_activity_list.dart';
+import 'package:trips_app_flutter/views/city/widgets/trip_overview.dart';
 
 class CityView extends StatefulWidget {
   CityView({super.key});
@@ -27,6 +29,7 @@ class _CityViewState extends State<CityView> {
 
   void switchIndex(nexIndex) {
     setState(() {
+      print(nexIndex);
       index = nexIndex;
     });
   }
@@ -48,8 +51,7 @@ class _CityViewState extends State<CityView> {
   void addActivity(Activity activity) {
     setState(() {
       if (!myTrips.contains(activity)) {
-        myTrips
-            .add(activity);
+        myTrips.add(activity);
       } else {
         myTrips.remove(activity);
       }
@@ -70,113 +72,18 @@ class _CityViewState extends State<CityView> {
         padding: const EdgeInsets.all(10),
         child: SizedBox(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'Paris',
-                style: TextStyle(
-                    fontSize: 18, decoration: TextDecoration.underline),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(result != null
-                      ? DateFormat("d/M/y").format(result!)
-                      : 'Choisissez une date'),
-                  ElevatedButton(
-                    onPressed: () {
-                      setDate();
-                    },
-                    child: Text('Selectionner une date'),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Montant / Personnne',
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.normal),
-                  ),
-                  Text(
-                    '0.0',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  )
-                ],
-              ),
+              TripOverview(setDate: setDate),
               const SizedBox(
                 height: 10,
               ),
               Expanded(
-                child: GridView.count(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 1,
-                  crossAxisSpacing: 1,
-                  children: [
-                    ...widget.activities.map(
-                      (activity) {
-                        return Card(
-                          elevation: 2,
-                          child: Stack(
-                            fit: StackFit.expand,
-                            children: [
-                              Ink.image(
-                                image: AssetImage(activity.image),
-                                fit: BoxFit.cover,
-                                child: InkWell(
-                                  onTap: () {
-                                    addActivity(activity);
-                                  },
-                                ),
-                              ),
-                              Container(
-                                padding: const EdgeInsets.all(10),
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        if (myTrips.contains(activity))
-                                          const Icon(Icons.check, color: Colors.white, size: 40,)
-                                      ],
-                                    ),
-                                    const Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Flexible(
-                                          child: FittedBox(
-                                            child: Text(
-                                              'Titre de lactivité',
-                                              style: TextStyle(
-                                                  fontSize: 20,
-                                                  color: Colors.white),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              )
+                child: index == 0 ? ActivityList(
+                  activities: widget.activities,
+                  myTrips: myTrips,
+                  toggleActivity: addActivity,
+                ) : TripActivityList(activities: myTrips),
+              ),
             ],
           ),
         ),

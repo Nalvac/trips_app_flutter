@@ -1,5 +1,5 @@
 import 'package:trips_app_flutter/models/city_model.dart';
-import 'package:trips_app_flutter/views/city/activity_model.dart';
+import 'package:trips_app_flutter/models/activity_model.dart';
 
 List<City> cities = [
   City(
