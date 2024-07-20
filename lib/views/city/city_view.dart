@@ -23,7 +23,6 @@ class _CityViewState extends State<CityView> {
       lastDate: DateTime(2025),
     ).then((newDate) => {
       if(newDate != null) {
-        print(newDate)
       }
     });
   }
