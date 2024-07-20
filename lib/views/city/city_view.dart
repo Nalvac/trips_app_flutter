@@ -26,7 +26,6 @@ class _CityViewState extends State<CityView> {
         print(newDate)
       }
     });
-    print(result);
   }
 
   @override
