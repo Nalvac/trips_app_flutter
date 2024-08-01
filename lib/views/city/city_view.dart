@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:trips_app_flutter/models/activity_model.dart';
 import 'package:trips_app_flutter/data/data.dart' as data;
+import 'package:trips_app_flutter/models/city_model.dart';
+import 'package:trips_app_flutter/models/trip_model.dart';
+import 'package:trips_app_flutter/provider/city_provider.dart';
 import 'package:trips_app_flutter/views/city/widgets/activity_list.dart';
 import 'package:trips_app_flutter/views/city/widgets/trip_activity_list.dart';
 import 'package:trips_app_flutter/views/city/widgets/trip_overview.dart';
@@ -8,7 +12,7 @@ import 'package:trips_app_flutter/views/city/widgets/trip_overview.dart';
 class CityView extends StatefulWidget {
   CityView({super.key});
 
-  final List<Activity> activities = data.activities;
+  final List<City> city = data.cities;
   static String routeName = '/city';
 
   @override
@@ -17,13 +21,14 @@ class CityView extends StatefulWidget {
 
 class _CityViewState extends State<CityView> {
   late int index;
-  DateTime? result;
+  late Trip myTrip;
 
-  List<Activity> myTrips = [];
+  DateTime? result;
 
   @override
   void initState() {
     super.initState();
+    myTrip = Trip(city: '', activities: [], date: null);
     index = 0;
   }
 
@@ -41,25 +46,40 @@ class _CityViewState extends State<CityView> {
       initialDate: DateTime.now().add(const Duration(days: 1)),
       firstDate: DateTime.now(),
       lastDate: DateTime(2025),
-    ).then((value) {
-      setState(() {
-        result = value;
-      });
+    ).then((newDate) {
+      if (newDate != null) {
+        setState(() {
+          myTrip.date = newDate;
+        });
+      }
     });
   }
 
-  void addActivity(Activity activity) {
+  double get amount {
+    return myTrip.activities.fold(0.0, (prev, element) {
+      return prev + element.price;
+    });
+  }
+
+  void toggleActivity(Activity activity) {
     setState(() {
-      if (!myTrips.contains(activity)) {
-        myTrips.add(activity);
-      } else {
-        myTrips.remove(activity);
-      }
+      myTrip.activities.contains(activity)
+          ? myTrip.activities.remove(activity)
+          : myTrip.activities.add(activity);
+    });
+  }
+
+  void deleteTripActivity(Activity activity) {
+    setState(() {
+      myTrip.activities.remove(activity);
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    String cityName = ModalRoute.of(context)!.settings.arguments as String;
+    City city = Provider.of<CityProvider>(context).getCityByName(cityName);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Organisation du voyage'),
@@ -73,16 +93,20 @@ class _CityViewState extends State<CityView> {
         child: SizedBox(
           child: Column(
             children: [
-              TripOverview(setDate: setDate),
+              TripOverview(setDate: setDate, amount:  amount, cityImage: city.image, cityName: cityName, myTrip: myTrip,),
               const SizedBox(
                 height: 10,
               ),
               Expanded(
-                child: index == 0 ? ActivityList(
-                  activities: widget.activities,
-                  myTrips: myTrips,
-                  toggleActivity: addActivity,
-                ) : TripActivityList(activities: myTrips),
+                child: index == 0
+                    ? ActivityList(
+                        activities: city.activities,
+                        selectedActivities: myTrip.activities,
+                        toggleActivity: toggleActivity,
+                      )
+                    : TripActivityList(
+                        activities: myTrip.activities,
+                        deleteTripActivity: deleteTripActivity),
               ),
             ],
           ),

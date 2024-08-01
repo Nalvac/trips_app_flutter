@@ -4,14 +4,14 @@ import 'package:trips_app_flutter/views/city/widgets/activity_card.dart';
 
 class ActivityList extends StatelessWidget {
   final List<Activity> activities;
-  final List<Activity> myTrips;
+  final List<Activity> selectedActivities;
   final Function toggleActivity;
 
   const ActivityList(
       {super.key,
       required this.activities,
       required this.toggleActivity,
-      required this.myTrips});
+      required this.selectedActivities});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class ActivityList extends StatelessWidget {
             toggleActivity: () {
               toggleActivity(activity);
             },
-            isSelected: myTrips.contains(activity),
+            isSelected: selectedActivities.contains(activity),
           ),
         ),
       ],

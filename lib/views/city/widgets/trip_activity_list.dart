@@ -3,8 +3,9 @@ import 'package:trips_app_flutter/models/activity_model.dart';
 
 class TripActivityList extends StatelessWidget {
   final List<Activity> activities;
+  final Function deleteTripActivity;
 
-  const TripActivityList({super.key, required this.activities});
+  const TripActivityList({super.key, required this.activities, required this.deleteTripActivity});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +16,7 @@ class TripActivityList extends StatelessWidget {
         return Card(
           child: ListTile(
             leading: CircleAvatar(
-              backgroundImage: AssetImage(activity.image),
+              backgroundImage: NetworkImage(activity.image),
             ),
             title: Text(activity.name),
             subtitle: Text(
@@ -29,7 +30,7 @@ class TripActivityList extends StatelessWidget {
                 Icons.delete,
                 color: Colors.red,
               ),
-              onPressed: () {},
+              onPressed: () => deleteTripActivity(activity),
             ),
           ),
         );

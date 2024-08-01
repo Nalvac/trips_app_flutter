@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:trips_app_flutter/models/city_model.dart';
 import 'package:trips_app_flutter/data/data.dart' as data;
 import 'package:trips_app_flutter/views/home/widgets/city_card.dart';
+import 'package:trips_app_flutter/views/home/widgets/drawer.dart';
 
 class HomeView extends StatefulWidget {
   HomeView({super.key});
@@ -21,6 +22,7 @@ class _HomeViewState extends State<HomeView> {
         title: const Text('Destinations'),
         leading: const Icon(Icons.house),
       ),
+      drawer: const DrawerWidget(),
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: Column(

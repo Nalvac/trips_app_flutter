@@ -15,4 +15,13 @@ class Activity {
       required this.image,
       required this.price})
       : status = ActivityStatus.ongoing;
+
+  Activity.fromJson(Map<String, dynamic> json)
+      : id = json['_id'],
+        name = json['name'],
+        image = json['image'],
+        city = json['city'],
+        price = json['price'].toDouble(),
+        status =
+        json['status'] == 0 ? ActivityStatus.ongoing : ActivityStatus.done;
 }
