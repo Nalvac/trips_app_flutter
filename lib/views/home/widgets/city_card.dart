@@ -20,7 +20,7 @@ class CityCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               child: Material(
                 child: Ink.image(
-                  image: AssetImage(city.image),
+                  image: NetworkImage(city.image),
                   fit: BoxFit.cover,
                   child: InkWell(
                     onTap: () => Navigator.pushNamed(context, CityView.routeName, arguments: city.name),
@@ -43,6 +43,6 @@ class CityCard extends StatelessWidget {
           ],
         ),
       ),
-    );;
+    );
   }
 }

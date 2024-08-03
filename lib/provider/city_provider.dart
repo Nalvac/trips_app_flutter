@@ -5,6 +5,7 @@ import 'package:trips_app_flutter/models/city_model.dart';
 import 'dart:convert';
 
 class CityProvider extends ChangeNotifier {
+  
   bool isLoading = false;
   final String host = 'localhost';
   List<City> _cities = [];
