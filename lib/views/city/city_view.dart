@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trips_app_flutter/models/activity_model.dart';
@@ -5,9 +6,11 @@ import 'package:trips_app_flutter/data/data.dart' as data;
 import 'package:trips_app_flutter/models/city_model.dart';
 import 'package:trips_app_flutter/models/trip_model.dart';
 import 'package:trips_app_flutter/provider/city_provider.dart';
+import 'package:trips_app_flutter/provider/trips_provider.dart';
 import 'package:trips_app_flutter/views/city/widgets/activity_list.dart';
 import 'package:trips_app_flutter/views/city/widgets/trip_activity_list.dart';
 import 'package:trips_app_flutter/views/city/widgets/trip_overview.dart';
+import 'package:trips_app_flutter/views/home/home_view.dart';
 
 class CityView extends StatefulWidget {
   CityView({super.key});
@@ -30,6 +33,66 @@ class _CityViewState extends State<CityView> {
     super.initState();
     myTrip = Trip(city: '', activities: [], date: null);
     index = 0;
+  }
+
+  void saveTrip(String cityName) async {
+    final result = await showDialog(
+      context: context,
+      builder: (context) => SimpleDialog(
+        title: const Text('Voulez-vous sauvergader ?'),
+        contentPadding: const EdgeInsets.all(20),
+        backgroundColor: Colors.white,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context, 'cancel');
+                },
+                child: const Text(
+                  'Annuler',
+                  style: TextStyle(color: Colors.red),
+                ),
+              ),
+              const SizedBox(
+                width: 20,
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context, 'save');
+                },
+                child: const Text(
+                  'Sauvergarder',
+                  style: TextStyle(color: Colors.blue),
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+
+    if(myTrip.date == null) {
+      if(mounted) {
+        showDialog(context: context, builder: (context) {
+          return AlertDialog(
+            backgroundColor: Colors.white,
+            title: const Text('Attention'),
+            content: const Text('Vous n\'avez pas rentrer de date'),
+            actions: [
+              TextButton(onPressed: () {Navigator.pop(context);}, child: const Text('OK'))
+            ],
+          );
+        });
+      }
+    } else if (result == 'save') {
+      if (mounted) {
+        myTrip.city = cityName;
+        Provider.of<TripsProvider>(context, listen: false).addTrip(myTrip);
+        Navigator.pop(context, HomeView.routeName);
+      }
+    }
   }
 
   void switchIndex(nexIndex) {
@@ -93,7 +156,13 @@ class _CityViewState extends State<CityView> {
         child: SizedBox(
           child: Column(
             children: [
-              TripOverview(setDate: setDate, amount:  amount, cityImage: city.image, cityName: cityName, myTrip: myTrip,),
+              TripOverview(
+                setDate: setDate,
+                amount: amount,
+                cityImage: city.image,
+                cityName: cityName,
+                myTrip: myTrip,
+              ),
               const SizedBox(
                 height: 10,
               ),
@@ -111,6 +180,12 @@ class _CityViewState extends State<CityView> {
             ],
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          saveTrip(cityName);
+        },
+        child: const Icon(Icons.forward),
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white,

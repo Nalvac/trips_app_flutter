@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trips_app_flutter/provider/city_provider.dart';
+import 'package:trips_app_flutter/provider/trips_provider.dart';
 import 'package:trips_app_flutter/views/city/city_view.dart';
 import 'package:trips_app_flutter/views/home/home_view.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:trips_app_flutter/views/trips/trips_view.dart';
 
 void main() {
   runApp(const MyTrips());
@@ -18,10 +20,12 @@ class MyTrips extends StatefulWidget {
 
 class _MyTripsState extends State<MyTrips> {
   final CityProvider cityProvider = CityProvider();
+  final TripsProvider tripsProvider = TripsProvider();
 
   @override
   void initState() {
     cityProvider.fetchData();
+    tripsProvider.fetchData();
     super.initState();
   }
 
@@ -30,6 +34,7 @@ class _MyTripsState extends State<MyTrips> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: cityProvider),
+        ChangeNotifierProvider.value(value: tripsProvider),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -46,8 +51,9 @@ class _MyTripsState extends State<MyTrips> {
           useMaterial3: true,
         ),
         routes: {
-          HomeView.routeName: (context) => HomeView(),
-          CityView.routeName: (context) => CityView(),
+          HomeView.routeName: (_) => HomeView(),
+          CityView.routeName: (_) => CityView(),
+          TripsView.routeName: (_) => const TripsView(),
         },
       ),
     );

@@ -42,8 +42,7 @@ class _HomeViewState extends State<HomeView> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Destinations'),
-        leading: const Icon(Icons.house),
+        title: const Text('Destinations')
       ),
       drawer: const DrawerWidget(),
       body: Container(
