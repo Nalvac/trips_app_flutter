@@ -161,7 +161,7 @@ class _CityViewState extends State<CityView> {
                 amount: amount,
                 cityImage: city.image,
                 cityName: cityName,
-                myTrip: myTrip,
+                trip: myTrip,
               ),
               const SizedBox(
                 height: 10,

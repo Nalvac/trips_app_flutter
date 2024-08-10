@@ -1,67 +1,78 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:trips_app_flutter/models/trip_model.dart';
+import 'trip_overview_city.dart';
+import '../../../models/trip_model.dart';
 
 class TripOverview extends StatelessWidget {
-  final double amount;
   final VoidCallback setDate;
-  final Trip myTrip;
+  final Trip trip;
   final String cityName;
   final String cityImage;
+  final double amount;
 
-  const TripOverview(
-      {super.key,
-      required this.setDate,
-      required this.amount,
-      required this.myTrip,
-      required this.cityName,
-      required this.cityImage});
+  const TripOverview({super.key,
+    required this.setDate,
+    required this.trip,
+    required this.cityName,
+    required this.amount,
+    required this.cityImage,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(10),
-      height: 200,
+      color: Colors.white,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            cityName,
-            style:
-                const TextStyle(fontSize: 18, decoration: TextDecoration.underline),
+        children: <Widget>[
+          TripOverviewCity(cityName: cityName, cityImage: cityImage),
+          const SizedBox(
+            height: 30,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: Text(
+                    trip.date != null
+                        ? DateFormat("d/M/y").format(trip.date!)
+                        : 'Choisissez une date',
+                    style: const TextStyle(fontSize: 15),
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: setDate,
+                  child: const Text('Sélectionner une date'),
+                )
+              ],
+            ),
           ),
           const SizedBox(
-            height: 10,
+            height: 30,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(myTrip.date != null ? DateFormat("d/M/y").format(myTrip.date!) : 'Choisissez une date' ),
-              ElevatedButton(
-                onPressed: () {
-                  setDate();
-                },
-                child: const Text('Selectionner une date'),
-              ),
-            ],
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            child: Row(
+              children: <Widget>[
+                const Expanded(
+                  child: Text(
+                    'Montant / personne',
+                    style: TextStyle(fontSize: 15),
+                  ),
+                ),
+                Text(
+                  '$amount €',
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
           ),
           const SizedBox(
-            height: 10,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Montant / Personnne',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal),
-              ),
-              Text(
-                amount.toString(),
-                style:
-                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-            ],
+            height: 30,
           ),
         ],
       ),

@@ -3,15 +3,15 @@ import 'package:trips_app_flutter/models/city_model.dart';
 import 'package:trips_app_flutter/views/city/city_view.dart';
 
 class CityCard extends StatelessWidget {
-
   final City city;
+
   const CityCard({super.key, required this.city});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 150,
-      child: Card (
+      child: Card(
         elevation: 5,
         child: Stack(
           fit: StackFit.expand,
@@ -19,12 +19,21 @@ class CityCard extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: Material(
-                child: Ink.image(
-                  image: NetworkImage(city.image),
-                  fit: BoxFit.cover,
-                  child: InkWell(
-                    onTap: () => Navigator.pushNamed(context, CityView.routeName, arguments: city.name),
+                child: GestureDetector(
+                  child: Hero(
+                    tag: city.name,
+                    child: Image.network(
+                      city.image,
+                      fit: BoxFit.cover,
+                    ),
                   ),
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      '/city',
+                      arguments: city.name,
+                    );
+                  },
                 ),
               ),
             ),
@@ -36,7 +45,10 @@ class CityCard extends StatelessWidget {
                 color: Colors.black54,
                 child: Text(
                   city.name,
-                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 20),
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 20),
                 ),
               ),
             ),
