@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:trips_app_flutter/provider/city_provider.dart';
 import 'package:trips_app_flutter/provider/trips_provider.dart';
+import 'package:trips_app_flutter/views/activity_form/activity_form_view.dart';
 import 'package:trips_app_flutter/views/city/city_view.dart';
 import 'package:trips_app_flutter/views/home/home_view.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -57,6 +58,7 @@ class _MyTripsState extends State<MyTrips> {
           CityView.routeName: (_) => CityView(),
           TripView.routeName: (_) => const TripView(),
           TripsView.routeName: (_) => const TripsView(),
+          ActivityFormView.routeName: (_) => const ActivityFormView(),
         },
         onUnknownRoute: (_) => MaterialPageRoute(
           builder: (_) => const NotFound(),

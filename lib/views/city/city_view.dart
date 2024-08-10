@@ -7,6 +7,7 @@ import 'package:trips_app_flutter/models/city_model.dart';
 import 'package:trips_app_flutter/models/trip_model.dart';
 import 'package:trips_app_flutter/provider/city_provider.dart';
 import 'package:trips_app_flutter/provider/trips_provider.dart';
+import 'package:trips_app_flutter/views/activity_form/activity_form_view.dart';
 import 'package:trips_app_flutter/views/city/widgets/activity_list.dart';
 import 'package:trips_app_flutter/views/city/widgets/trip_activity_list.dart';
 import 'package:trips_app_flutter/views/city/widgets/trip_overview.dart';
@@ -31,7 +32,7 @@ class _CityViewState extends State<CityView> {
   @override
   void initState() {
     super.initState();
-    myTrip = Trip(city: '', activities: [], date: null);
+    myTrip = Trip(id: null, city: '', activities: [], date: null);
     index = 0;
   }
 
@@ -150,6 +151,17 @@ class _CityViewState extends State<CityView> {
           icon: const Icon(Icons.arrow_back_ios_new),
           onPressed: () => Navigator.pop(context),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.add,
+              color: Colors.black,
+            ),
+            onPressed: () => Navigator.pushNamed(
+                context, ActivityFormView.routeName,
+                arguments: cityName),
+          )
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),

@@ -7,8 +7,7 @@ class Trip {
   List<Activity> activities;
   DateTime? date;
 
-  Trip({required this.city, required this.activities, required this.date})
-      : id = UniqueKey().toString();
+  Trip({required this.city, required this.activities, required this.date, this.id});
 
   Trip.fromJson(Map<String, dynamic> json)
       :
@@ -19,6 +18,7 @@ class Trip {
 
   Map<String, dynamic> toJson() {
     if (id != null) {
+      print(id);
       return {
         '_id': id,
         'city': city,
