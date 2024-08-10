@@ -5,6 +5,8 @@ import 'package:trips_app_flutter/provider/trips_provider.dart';
 import 'package:trips_app_flutter/views/city/city_view.dart';
 import 'package:trips_app_flutter/views/home/home_view.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:trips_app_flutter/views/not-found/not_found.dart';
+import 'package:trips_app_flutter/views/trip/trip_view.dart';
 import 'package:trips_app_flutter/views/trips/trips_view.dart';
 
 void main() {
@@ -53,8 +55,12 @@ class _MyTripsState extends State<MyTrips> {
         routes: {
           HomeView.routeName: (_) => HomeView(),
           CityView.routeName: (_) => CityView(),
+          TripView.routeName: (_) => const TripView(),
           TripsView.routeName: (_) => const TripsView(),
         },
+        onUnknownRoute: (_) => MaterialPageRoute(
+          builder: (_) => const NotFound(),
+        ),
       ),
     );
   }

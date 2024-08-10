@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:trips_app_flutter/models/trip_model.dart';
+import 'package:trips_app_flutter/views/trip/trip_view.dart';
 import 'package:trips_app_flutter/views/trips/trips_view.dart';
 
 class TripList extends StatelessWidget {
@@ -22,7 +23,7 @@ class TripList extends StatelessWidget {
               : null,
           trailing: const Icon(Icons.info),
           onTap: () {
-            Navigator.pushNamed(context, TripsView.routeName, arguments: {'tripId': trip.id, 'cityName': trip.city});
+            Navigator.pushNamed(context, TripView.routeName, arguments: {'tripId': trip.id, 'cityName': trip.city});
           },
         );
       },
